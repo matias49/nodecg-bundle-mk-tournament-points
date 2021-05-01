@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style>
+		body {
+			font-family: 'Source Sans Pro', sans-serif;
+			margin: 0;
+		}
+
+		.scoreBar {
+			padding: 0.2rem 0.5rem;
+			display: flex;
+			flex-direction: row;
+			background-color: #FF56A9;
+			color: white;
+			font-size: 21px;
+		}
+
+		.additionalInfo {
+			background-color: #FF56A9;
+			color: white;
+			float: right;
+			font-size: 18px;
+			font-style: italic;
+		}
+
+		#playerName, #tournamentName {
+			border-left: 1px solid #802B54;
+			border-right: 1px solid #802B54;
+			padding: 0.05rem 0.7rem;
+		}
+
+		.raceNumber {
+			display: flex;
+			flex: 0.1;
+			justify-content: left;
+			border-right: 5px solid #BF417E;
+			align-items: center;
+			margin-right: 0.5rem;
+		}
+
+		.raceNumber .currentRace::after {
+			content: '/';
+		}
+
+		.score::after {
+			content: ' pts';
+		}
+
+		.points {
+			display: flex;
+			flex: 1;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		.points > div {
+			display: flex;
+			align-items: center;
+		}
+
+		.objective {
+			display: flex;
+			flex: 0.15;
+			justify-content: right;
+			text-align: right;
+			border-left: 5px solid #BF417E;
+			align-items: center;
+			margin-left: 0.5rem;
+			padding-left: 0.5rem;
+		}
+
+
+		.legend {
+			font-weight: bold;
+			margin-right: 0.2rem;
+		}
+
+		.delta {
+			margin-left: 0.4rem;
+			font-size: 15px;
+			font-style: italic;
+		}
+
+		#record .legend, #record .score {
+			color: #56fcff;
+		}
+
+		#worst .legend, #worst .score {
+			color: #ffd556;
+		}
+
+		.legend::after {
+			content: ' : ';
+		}
+	</style>
+	<script src="../common/scores.js"></script>
+</head>
+<body>
+<div>
+	<div class="scoreBar">
+		<img src="https://ponce.tournois-mario-kart.fr/static/media/poncefleur.15ec8d68.png" height="35px"
+			 style="margin-right: 0.5rem;">
+		<div class="raceNumber" id="raceNumber">
+			<span class="legend">Course</span>
+			<span class="currentRace" id="currentRace">0</span>
+			<span class="maxRaces">24</span>
+		</div>
+		<div class="points" id="points">
+			<div class="record" id="record">
+				<span class="legend">Record</span>
+				<span class="score" id="recordScore">0</span>
+				<span class="delta" id="recordDelta">0</span>
+			</div>
+			<div class="current" id="current">
+				<span class="legend">Session</span>
+				<span class="score" id="currentScore">0</span>
+			</div>
+			<div class="worst" id="worst">
+				<span class="legend">Pire</span>
+				<span class="score" id="worstScore">0</span>
+				<span class="delta" id="worstDelta">0</span>
+			</div>
+		</div>
+		<div class="objective" id="objective">
+			<span class="legend">Objectif</span>
+			<span class="score" id="objectiveScore">200</span>
+			<span class="delta" id="objectiveDelta">0</span>
+		</div>
+	</div>
+	<div class="additionalInfo">
+		<span id="tournamentName">Ave - 106</span><span id="playerName">Matias49</span>
+	</div>
+</div>
+
+<script>
+	let recordScoreNumber = 0;
+
+	let currentRankings = [];
+	let currentCumulativePoints = [];
+
+	let recordScore = document.getElementById('recordScore');
+	let recordDelta = document.getElementById('recordDelta');
+
+	let currentRace = document.getElementById('currentRace');
+	let currentScore = document.getElementById('currentScore');
+
+	let worstScore = document.getElementById('worstScore');
+	let worstDelta = document.getElementById('worstDelta');
+
+	let objectiveScore = document.getElementById('objectiveScore');
+	let objectiveDelta = document.getElementById('objectiveDelta');
+
+	document.addEventListener("DOMContentLoaded", (event) => {
+		objectiveScore.textContent = objectiveScoreNumber;
+		// recordRankings.forEach((ranking) => {
+		// 	console.log(recordScoreNumber);
+		// 	recordScoreNumber+= calcPoints(ranking);
+		// });
+		// recordScore.textContent = recordCumulativePoints[recordCumulativePoints.length - 1];
+		// worstScore.textContent = worstCumulativePoints[worstCumulativePoints.length - 1];
+		displayNewDeltas();
+	});
+
+	nodecg.listenFor('raceRanking', ranking => {
+		console.log(ranking);
+		currentRankings.push(ranking);
+		let previousPoints = isNaN(currentCumulativePoints[currentCumulativePoints.length - 1]) ? 0 : currentCumulativePoints[currentCumulativePoints.length - 1];
+		currentCumulativePoints.push(previousPoints + calcPoints(ranking))
+		currentRace.textContent = currentRankings.length;
+		recordScore.textContent = recordCumulativePoints[currentRankings.length - 1];
+		worstScore.textContent = worstCumulativePoints[currentRankings.length - 1];
+		currentScore.textContent = currentCumulativePoints[currentRankings.length - 1];
+		displayNewDeltas();
+	});
+
+	function displayNewDeltas() {
+		let recordDeltaCalc = recordScore.textContent - currentScore.textContent;
+		let worstDeltaCalc = worstScore.textContent - currentScore.textContent;
+		let objectiveDeltaCalc = objectiveScore.textContent - currentScore.textContent;
+
+		recordDelta.textContent = recordDeltaCalc;
+		worstDelta.textContent = worstDeltaCalc;
+		objectiveDelta.textContent = objectiveDeltaCalc;
+
+		let deltas = [worstDelta, objectiveDelta, recordDelta];
+		deltas.forEach((delta) => {
+			if (delta.textContent < 0) {
+				delta.style.color = '#a8ff56';
+			} else if (delta.textContent > 0) {
+				delta.textContent = '+' + delta.textContent;
+				delta.style.color = '#fcff56';
+			} else {
+				delta.style.color = '#fff';
+			}
+		});
+
+	}
+
+	// You can access the NodeCG api anytime from the `window.nodecg` object
+	// Or just `nodecg` for short. Like this!:
+	nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "ponce-points",
+  "version": "0.0.0",
+  "description": "Affichage des points pour le tournoi",
+  "homepage": "",
+  "author": {
+    "name": "Matias49",
+    "email": "Anonymous",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "^1.1.1",
+    "dashboardPanels": [
+      {
+        "name": "panel",
+        "title": "Panel",
+        "width": 8,
+        "file": "panel.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "mount": [
+      {
+        "directory": "common",
+        "endpoint": "common"
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}
