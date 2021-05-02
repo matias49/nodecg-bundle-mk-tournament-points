@@ -1,106 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Ponce Points</title>
 	<meta charset="UTF-8">
-	<style>
-		body {
-			font-family: 'Source Sans Pro', sans-serif;
-			margin: 0;
-		}
-
-		.scoreBar {
-			padding: 0.2rem 0.5rem;
-			display: flex;
-			flex-direction: row;
-			background-color: #FF56A9;
-			color: white;
-			font-size: 21px;
-		}
-
-		.additionalInfo {
-			background-color: #FF56A9;
-			color: white;
-			float: right;
-			font-size: 18px;
-			font-style: italic;
-		}
-
-		#playerName, #tournamentName {
-			border-left: 1px solid #802B54;
-			border-right: 1px solid #802B54;
-			padding: 0.05rem 0.7rem;
-		}
-
-		.raceNumber {
-			display: flex;
-			flex: 0.1;
-			justify-content: left;
-			border-right: 5px solid #BF417E;
-			align-items: center;
-			margin-right: 0.5rem;
-		}
-
-		.raceNumber .currentRace::after {
-			content: '/';
-		}
-
-		.score::after {
-			content: ' pts';
-		}
-
-		.points {
-			display: flex;
-			flex: 1;
-			flex-direction: row;
-			justify-content: space-between;
-		}
-
-		.points > div {
-			display: flex;
-			align-items: center;
-		}
-
-		.objective {
-			display: flex;
-			flex: 0.15;
-			justify-content: right;
-			text-align: right;
-			border-left: 5px solid #BF417E;
-			align-items: center;
-			margin-left: 0.5rem;
-			padding-left: 0.5rem;
-		}
-
-
-		.legend {
-			font-weight: bold;
-			margin-right: 0.2rem;
-		}
-
-		.delta {
-			margin-left: 0.4rem;
-			font-size: 15px;
-			font-style: italic;
-		}
-
-		#record .legend, #record .score {
-			color: #56fcff;
-		}
-
-		#worst .legend, #worst .score {
-			color: #ffd556;
-		}
-
-		.legend::after {
-			content: ' : ';
-		}
-	</style>
 	<script src="../common/scores.js"></script>
+	<link rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
 <div>
 	<div class="scoreBar">
-		<img src="https://ponce.tournois-mario-kart.fr/static/media/poncefleur.15ec8d68.png" height="35px"
+		<img alt="logo" src="https://ponce.tournois-mario-kart.fr/static/media/poncefleur.15ec8d68.png" height="35px"
 			 style="margin-right: 0.5rem;">
 		<div class="raceNumber" id="raceNumber">
 			<span class="legend">Course</span>
@@ -152,7 +61,7 @@
 	let objectiveScore = document.getElementById('objectiveScore');
 	let objectiveDelta = document.getElementById('objectiveDelta');
 
-	document.addEventListener("DOMContentLoaded", (event) => {
+	document.addEventListener("DOMContentLoaded", () => {
 		objectiveScore.textContent = objectiveScoreNumber;
 		// recordRankings.forEach((ranking) => {
 		// 	console.log(recordScoreNumber);
