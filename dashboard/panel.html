@@ -55,7 +55,7 @@
 	let rankingSubmits = document.querySelectorAll('.submitRanking');
 	rankingSubmits.forEach((button) => {
 		button.addEventListener('click', (evt => {
-			nodecg.sendMessage('raceRanking', evt.currentTarget.dataset.ranking);
+			nodecg.sendMessage('raceRanking', Number(evt.currentTarget.dataset.ranking));
 		}));
 	})
 </script>

@@ -4,45 +4,85 @@
 	<title>Ponce Points</title>
 	<meta charset="UTF-8">
 	<script src="../common/scores.js"></script>
-	<link rel="stylesheet" href="css/index.css"/>
+	<link href="css/index.css" rel="stylesheet"/>
 </head>
 <body>
 <div>
-	<div class="scoreBar">
-		<img alt="logo" src="https://ponce.tournois-mario-kart.fr/static/media/poncefleur.15ec8d68.png" height="35px"
-			 style="margin-right: 0.5rem;">
-		<div class="raceNumber" id="raceNumber">
-			<span class="legend">Course</span>
-			<span class="currentRace" id="currentRace">0</span>
-			<span class="maxRaces">24</span>
-		</div>
-		<div class="points" id="points">
-			<div class="record" id="record">
-				<span class="legend">Record</span>
-				<span class="score" id="recordScore">0</span>
-				<span class="delta" id="recordDelta">0</span>
-			</div>
-			<div class="current" id="current">
-				<span class="legend">Session</span>
-				<span class="score" id="currentScore">0</span>
-			</div>
-			<div class="worst" id="worst">
-				<span class="legend">Pire</span>
-				<span class="score" id="worstScore">0</span>
-				<span class="delta" id="worstDelta">0</span>
+	<div class="bar">
+		<div class="leftPart">
+			<div class="raceNumber background" id="raceNumber">
+				<span class="legend">Course</span>
+				<span class="currentRace" id="currentRace">0</span>
+				<span class="maxRaces">24</span>
 			</div>
 		</div>
-		<div class="objective" id="objective">
-			<span class="legend">Objectif</span>
-			<span class="score" id="objectiveScore">200</span>
-			<span class="delta" id="objectiveDelta">0</span>
+		<div class="middlePart">
+			<div class="points background" id="points">
+				<div class="record" id="record">
+					<span class="legend">Record</span>
+					<span class="score" id="recordScore">0</span>
+					<span class="delta" id="recordDelta">0</span>
+				</div>
+				<div class="current" id="current">
+					<span class="legend">Session</span>
+					<span class="score" id="currentScore">0</span>
+				</div>
+				<div class="worst" id="worst">
+					<span class="legend">Pire</span>
+					<span class="score" id="worstScore">0</span>
+					<span class="delta" id="worstDelta">0</span>
+				</div>
+			</div>
+			<div id="races">
+				<div class="raceResult current" data-number="1"></div>
+				<div class="raceResult" data-number="2"></div>
+				<div class="raceResult" data-number="3"></div>
+				<div class="raceResult" data-number="4"></div>
+				<div class="raceResult" data-number="5"></div>
+				<div class="raceResult" data-number="6"></div>
+				<div class="raceResult" data-number="7"></div>
+				<div class="raceResult" data-number="8"></div>
+				<div class="raceResult" data-number="9"></div>
+				<div class="raceResult" data-number="10"></div>
+				<div class="raceResult" data-number="11"></div>
+				<div class="raceResult" data-number="12"></div>
+				<div class="raceResult" data-number="13"></div>
+				<div class="raceResult" data-number="14"></div>
+				<div class="raceResult" data-number="15"></div>
+				<div class="raceResult" data-number="16"></div>
+				<div class="raceResult" data-number="17"></div>
+				<div class="raceResult" data-number="18"></div>
+				<div class="raceResult" data-number="19"></div>
+				<div class="raceResult" data-number="20"></div>
+				<div class="raceResult" data-number="21"></div>
+				<div class="raceResult" data-number="22"></div>
+				<div class="raceResult" data-number="23"></div>
+				<div class="raceResult" data-number="24"></div>
+			</div>
 		</div>
-	</div>
-	<div class="additionalInfo">
-		<span id="tournamentName">Ave - 106</span><span id="playerName">Matias49</span>
+		<div class="rightPart">
+			<div class="topPart background">
+				<div class="objective" id="objective">
+					<span class="legend">Objectif</span>
+					<span class="score" id="objectiveScore">200</span>
+					<span class="delta" id="objectiveDelta">0</span>
+				</div>
+				<img alt="logo"
+					 height="35px"
+					 src="https://static-cdn.jtvnw.net/jtv_user_pictures/72dae8da-582a-4a2b-a234-37d4cd3fa7d9-profile_image-70x70.png"
+					 style="border-radius: 50%; opacity: 0.8; margin-left: auto;"/>
+			</div>
+			<div class="background" id="miscInfo">
+				<div id="tournamentName">Ave - 107</div>
+				<div id="playerName">Matias49</div>
+				<div id="hour"></div>
+			</div>
+		</div>
+
+
 	</div>
 </div>
-
+<script type="text/javascript" src="js/anime.min.js"></script>
 <script>
 	let recordScoreNumber = 0;
 
@@ -72,17 +112,74 @@
 		displayNewDeltas();
 	});
 
+	function updateRaceResultsBar() {
+		currentRankings.forEach((value, index) => {
+			let raceResult = document.querySelector('.raceResult[data-number="' + ++index + '"]');
+			raceResult.classList.remove('current');
+			raceResult.classList.add('past');
+			raceResult.textContent = value;
+			switch (value) {
+				case 1:
+					raceResult.textContent = '🥇';
+					raceResult.classList.add('first');
+					break;
+				case 2:
+					raceResult.textContent = '🥈';
+					raceResult.classList.add('second');
+					break;
+				case 3:
+					raceResult.textContent = '🥉';
+					raceResult.classList.add('third');
+					break;
+				default:
+					break;
+			}
+
+		});
+		let currentRace = document.querySelector('.raceResult[data-number="' + (currentRankings.length + 1) + '"]');
+		currentRace.classList.add('current')
+	}
+
 	nodecg.listenFor('raceRanking', ranking => {
 		console.log(ranking);
 		currentRankings.push(ranking);
 		let previousPoints = isNaN(currentCumulativePoints[currentCumulativePoints.length - 1]) ? 0 : currentCumulativePoints[currentCumulativePoints.length - 1];
 		currentCumulativePoints.push(previousPoints + calcPoints(ranking))
 		currentRace.textContent = currentRankings.length;
-		recordScore.textContent = recordCumulativePoints[currentRankings.length - 1];
+		// recordScore.textContent = recordCumulativePoints[currentRankings.length - 1];
 		worstScore.textContent = worstCumulativePoints[currentRankings.length - 1];
 		currentScore.textContent = currentCumulativePoints[currentRankings.length - 1];
 		displayNewDeltas();
+		updateRaceResultsBar();
+		updateScorePoints();
 	});
+
+	function updateScorePoints() {
+		// let timelineRecordScore = anime.timeline({
+		// 	targets: recordScore,
+		// });
+		// timelineRecordScore.add({
+		// 	keyframes: [{opacity: 0}, {opacity: 1}],
+		// 	textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
+		// 	easing: 'easeInOutSine',
+		// 	round: 1,
+		// 	duration: 1000,
+		// });
+		anime({
+			targets: recordScore,
+			textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
+			easing: 'easeInOutSine',
+			round: 1,
+			duration: 750,
+		});
+		anime({
+			targets: recordScore,
+			keyframes: [{opacity: 0}, {opacity: 1}],
+			easing: 'linear',
+			duration: 1000,
+		})
+	}
+
 
 	function displayNewDeltas() {
 		let recordDeltaCalc = recordScore.textContent - currentScore.textContent;
@@ -110,6 +207,29 @@
 	// You can access the NodeCG api anytime from the `window.nodecg` object
 	// Or just `nodecg` for short. Like this!:
 	nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
+
+	//region hour
+	let dateTime = new Date();
+
+	function updateTime() {
+		dateTime = new Date();
+		// https://stackoverflow.com/questions/10211145/getting-current-date-and-time-in-javascript
+		var hour = dateTime.getHours();
+		var minute = dateTime.getMinutes();
+		if (hour.toString().length === 1) {
+			hour = '0' + hour;
+		}
+		if (minute.toString().length === 1) {
+			minute = '0' + minute;
+		}
+		document.getElementById('hour').textContent = hour + ":" + minute;
+
+	}
+
+	setInterval(function () {
+		updateTime();
+	}, 1000);
+	//endregion
 </script>
 </body>
 </html>

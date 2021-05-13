@@ -1,38 +1,124 @@
+$bgColor: rgba(255, 86, 169, 0.6);
+$borderColor: rgba(128, 43, 84, 0.5);
+
+$flexSizeLeft: 0.1;
+$flexSizeRight: 0.17;
+
 body {
 	font-family: 'Source Sans Pro', sans-serif;
 	margin: 0;
 }
 
-.scoreBar {
+.background {
+	background-color: $bgColor;
 	padding: 0.2rem 0.5rem;
+}
+
+.bar {
 	display: flex;
 	flex-direction: row;
-	background-color: #FF56A9;
 	color: white;
 	font-size: 21px;
 }
 
-.additionalInfo {
-	background-color: #FF56A9;
-	color: white;
-	float: right;
-	font-size: 18px;
-	font-style: italic;
+.leftPart {
+	flex: $flexSizeLeft;
 }
 
-#playerName, #tournamentName {
-	border-left: 1px solid #802B54;
-	border-right: 1px solid #802B54;
-	padding: 0.05rem 0.7rem;
+.middlePart {
+	flex: 1;
+}
+
+.rightPart {
+	flex: $flexSizeRight;
+}
+
+.additionalInfo {
+	display: flex;
+	flex-direction: row;
+}
+
+.flexSpaceLeft {
+	flex: $flexSizeLeft;
+}
+
+#miscInfo {
+	flex: 0.15;
+	display: flex;
+	color: white;
+	font-size: 18px;
+	font-style: italic;
+	align-self: flex-end;
+
+	& > div {
+		border-left: 1px solid $borderColor;
+		border-right: 1px solid $borderColor;
+		padding: 0.05rem 0.7rem;
+
+		&:last-of-type {
+			border: none;
+		}
+	}
+}
+
+.raceResult {
+	width: 2rem;
+	height: 2rem;
+	font-size: 1.2rem;
+	opacity: 0.8;
+	background-color: rgba(255, 255, 255, 0.3);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.current {
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+
+	&.past {
+		background-color: rgba(128, 128, 128, 0.6);
+
+		&:after {
+			content: 'e';
+			vertical-align: top;
+			font-size: 10px;
+		}
+
+		&.first {
+			background-color: rgba(218, 165, 32, 0.9);
+			font-size: 1.5rem;
+
+			&:after {
+				content: none;
+			}
+		}
+
+		&.second {
+			background-color: rgba(192, 192, 192, 0.9);
+			font-size: 1.5rem;
+
+			&:after {
+				content: none;
+			}
+		}
+
+		&.third {
+			background-color: rgba(244, 164, 96, 0.9);
+			font-size: 1.5rem;
+
+			&:after {
+				content: none;
+			}
+		}
+	}
 }
 
 .raceNumber {
 	display: flex;
-	flex: 0.1;
+	flex: $flexSizeLeft;
 	justify-content: left;
-	border-right: 5px solid #BF417E;
+	border-right: 5px solid $borderColor;
 	align-items: center;
-	margin-right: 0.5rem;
 
 	.currentRace {
 		&::after {
@@ -40,6 +126,13 @@ body {
 
 		}
 	}
+}
+
+#races {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
 }
 
 .score {
@@ -61,15 +154,16 @@ body {
 	}
 }
 
+.topPart {
+	display: flex;
+}
+
 .objective {
 	display: flex;
-	flex: 0.15;
-	justify-content: right;
-	text-align: right;
-	border-left: 5px solid #BF417E;
-	align-items: center;
-	margin-left: 0.5rem;
 	padding-left: 0.5rem;
+	justify-content: center;
+	border-left: 5px solid $borderColor;
+	align-items: center;
 }
 
 
