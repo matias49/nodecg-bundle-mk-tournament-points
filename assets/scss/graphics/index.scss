@@ -14,6 +14,12 @@ body {
 	padding: 0.2rem 0.5rem;
 }
 
+.positive {
+	&:before {
+		content: '+';
+	}
+}
+
 .bar {
 	display: flex;
 	flex-direction: row;
@@ -70,6 +76,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	transition: background-color 1s ease-in-out;
 
 	&.current {
 		background-color: rgba(255, 255, 255, 0.9);

@@ -82,7 +82,7 @@
 
 	</div>
 </div>
-<script type="text/javascript" src="js/anime.min.js"></script>
+<script src="js/anime.min.js" type="text/javascript"></script>
 <script>
 	let recordScoreNumber = 0;
 
@@ -103,106 +103,235 @@
 
 	document.addEventListener("DOMContentLoaded", () => {
 		objectiveScore.textContent = objectiveScoreNumber;
-		// recordRankings.forEach((ranking) => {
-		// 	console.log(recordScoreNumber);
-		// 	recordScoreNumber+= calcPoints(ranking);
-		// });
-		// recordScore.textContent = recordCumulativePoints[recordCumulativePoints.length - 1];
-		// worstScore.textContent = worstCumulativePoints[worstCumulativePoints.length - 1];
-		displayNewDeltas();
+		updateObjectiveDelta();
 	});
 
 	function updateRaceResultsBar() {
-		currentRankings.forEach((value, index) => {
-			let raceResult = document.querySelector('.raceResult[data-number="' + ++index + '"]');
-			raceResult.classList.remove('current');
-			raceResult.classList.add('past');
-			raceResult.textContent = value;
-			switch (value) {
-				case 1:
-					raceResult.textContent = '🥇';
-					raceResult.classList.add('first');
-					break;
-				case 2:
-					raceResult.textContent = '🥈';
-					raceResult.classList.add('second');
-					break;
-				case 3:
-					raceResult.textContent = '🥉';
-					raceResult.classList.add('third');
-					break;
-				default:
-					break;
-			}
+		let result;
+		let previousRaceResult = document.querySelector('.raceResult[data-number="' + currentRankings.length + '"]');
+		previousRaceResult.classList.remove('current');
+		previousRaceResult.classList.add('past');
+		switch (currentRankings[currentRankings.length - 1]) {
+			case 1:
+				result = '🥇';
+				previousRaceResult.classList.add('first');
+				break;
+			case 2:
+				result = '🥈';
+				previousRaceResult.classList.add('second');
+				break;
+			case 3:
+				result = '🥉';
+				previousRaceResult.classList.add('third');
+				break;
+			default:
+				result = currentRankings[currentRankings.length - 1];
+				break;
+		}
+		// currentRankings.forEach((value, index) => {
+		// 	let raceResult = document.querySelector('.raceResult[data-number="' + ++index + '"]');
+		// 	raceResult.classList.remove('current');
+		// 	raceResult.classList.add('past');
+		// 	let result;
+		// 	raceResult.textContent = value;
+		//
+		// });
+		if (isNaN(result)) {
+			// previousRaceResult.style.opacity = 0.9
+			// anime({
+			// 	targets: previousRaceResult,
+			// 	opacity: 1,
+			// 	easing: 'linear',
+			// 	duration: 1000,
+			// });
+			previousRaceResult.textContent = result;
+		} else {
+			anime({
+				targets: previousRaceResult,
+				textContent: [12, result],
+				easing: 'linear',
+				round: 1,
+				duration: 500,
+			});
+		}
 
-		});
 		let currentRace = document.querySelector('.raceResult[data-number="' + (currentRankings.length + 1) + '"]');
 		currentRace.classList.add('current')
 	}
 
 	nodecg.listenFor('raceRanking', ranking => {
-		console.log(ranking);
+		// console.log(ranking);
 		currentRankings.push(ranking);
 		let previousPoints = isNaN(currentCumulativePoints[currentCumulativePoints.length - 1]) ? 0 : currentCumulativePoints[currentCumulativePoints.length - 1];
 		currentCumulativePoints.push(previousPoints + calcPoints(ranking))
 		currentRace.textContent = currentRankings.length;
-		// recordScore.textContent = recordCumulativePoints[currentRankings.length - 1];
-		worstScore.textContent = worstCumulativePoints[currentRankings.length - 1];
-		currentScore.textContent = currentCumulativePoints[currentRankings.length - 1];
-		displayNewDeltas();
+		// worstScore.textContent = worstCumulativePoints[currentRankings.length - 1];
+		// currentScore.textContent = currentCumulativePoints[currentRankings.length - 1];
+		// displayNewDeltas();
 		updateRaceResultsBar();
-		updateScorePoints();
+		updateScoreData();
+		updateRecordData();
+		updateWorstData();
+		updateObjectiveDelta();
 	});
 
-	function updateScorePoints() {
-		// let timelineRecordScore = anime.timeline({
-		// 	targets: recordScore,
-		// });
-		// timelineRecordScore.add({
-		// 	keyframes: [{opacity: 0}, {opacity: 1}],
-		// 	textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
-		// 	easing: 'easeInOutSine',
-		// 	round: 1,
-		// 	duration: 1000,
-		// });
+	function updateScoreData() {
 		anime({
-			targets: recordScore,
-			textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
+			targets: currentScore,
+			keyframes: [{opacity: 0}, {opacity: 1}],
+			easing: 'linear',
+			duration: 1000,
+		});
+		anime({
+			targets: currentScore,
+			textContent: [currentScore.textContent, currentCumulativePoints[currentRankings.length - 1]],
 			easing: 'easeInOutSine',
 			round: 1,
-			duration: 750,
+			duration: 500,
+			delay: 250,
 		});
+
+
+	}
+
+	function updateRecordData() {
 		anime({
 			targets: recordScore,
 			keyframes: [{opacity: 0}, {opacity: 1}],
 			easing: 'linear',
 			duration: 1000,
-		})
+		});
+		anime({
+			targets: recordScore,
+			textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
+			easing: 'easeInOutSine',
+			round: 1,
+			duration: 500,
+			delay: 250,
+		});
+
+		let delta = getCurrentDeltaValue(recordCumulativePoints[currentRankings.length - 1]);
+		// anime({
+		// 	targets: worstDelta,
+		// 	keyframes: [{opacity: 0}, {opacity: 1}],
+		// 	easing: 'linear',
+		// 	duration: 1000,
+		// });
+		anime({
+			targets: recordDelta,
+			textContent: [recordDelta.textContent, delta],
+			easing: 'easeInOutSine',
+			color: getDeltaColor(delta),
+			round: 1,
+			duration: 500,
+			delay: 150,
+		}).finished.then(function () {
+			if (delta > 0) {
+				recordDelta.classList.add('positive');
+			} else {
+				recordDelta.classList.remove('positive');
+			}
+		});
 	}
 
+	function updateWorstData() {
+		anime({
+			targets: worstScore,
+			keyframes: [{opacity: 0}, {opacity: 1}],
+			easing: 'linear',
+			duration: 1000,
+		});
+		anime({
+			targets: worstScore,
+			textContent: [worstScore.textContent, worstCumulativePoints[currentRankings.length - 1]],
+			easing: 'easeInOutSine',
+			round: 1,
+			duration: 500,
+			delay: 150,
+		});
 
-	function displayNewDeltas() {
-		let recordDeltaCalc = recordScore.textContent - currentScore.textContent;
-		let worstDeltaCalc = worstScore.textContent - currentScore.textContent;
-		let objectiveDeltaCalc = objectiveScore.textContent - currentScore.textContent;
-
-		recordDelta.textContent = recordDeltaCalc;
-		worstDelta.textContent = worstDeltaCalc;
-		objectiveDelta.textContent = objectiveDeltaCalc;
-
-		let deltas = [worstDelta, objectiveDelta, recordDelta];
-		deltas.forEach((delta) => {
-			if (delta.textContent < 0) {
-				delta.style.color = '#a8ff56';
-			} else if (delta.textContent > 0) {
-				delta.textContent = '+' + delta.textContent;
-				delta.style.color = '#fcff56';
+		let delta = getCurrentDeltaValue(worstCumulativePoints[currentRankings.length - 1]);
+		// anime({
+		// 	targets: worstDelta,
+		// 	keyframes: [{opacity: 0}, {opacity: 1}],
+		// 	easing: 'linear',
+		// 	duration: 1000,
+		// });
+		anime({
+			targets: worstDelta,
+			textContent: [worstDelta.textContent, delta],
+			easing: 'easeInOutSine',
+			color: getDeltaColor(delta),
+			round: 1,
+			duration: 500,
+			delay: 150,
+		}).finished.then(function () {
+			if (delta > 0) {
+				worstDelta.classList.add('positive');
 			} else {
-				delta.style.color = '#fff';
+				worstDelta.classList.remove('positive');
 			}
 		});
 
+
 	}
+
+	function updateObjectiveDelta() {
+		let delta = getCurrentDeltaValue(objectiveScore.textContent);
+		anime({
+			targets: objectiveDelta,
+			textContent: [objectiveDelta.textContent, delta],
+			easing: 'easeInOutSine',
+			color: getDeltaColor(delta),
+			round: 1,
+			duration: 500,
+			delay: 250,
+		}).finished.then(function () {
+			if (delta > 0) {
+				objectiveDelta.classList.add('positive');
+			} else {
+				objectiveDelta.classList.remove('positive');
+			}
+		});
+	}
+
+	function getCurrentDeltaValue(value) {
+		let currentValue = isNaN(currentCumulativePoints[currentRankings.length - 1]) ? 0 : currentCumulativePoints[currentRankings.length - 1];
+		return value - currentValue;
+	}
+
+	function getDeltaColor(delta) {
+		if (delta < 0) {
+			return '#a8ff56';
+		} else if (delta > 0) {
+			return '#fcff56';
+		} else {
+			return '#fff';
+		}
+	}
+
+	// function displayNewDeltas() {
+	// 	let recordDeltaCalc = recordScore.textContent - currentScore.textContent;
+	// 	let worstDeltaCalc = worstScore.textContent - currentScore.textContent;
+	// 	let objectiveDeltaCalc = objectiveScore.textContent - currentScore.textContent;
+	//
+	// 	recordDelta.textContent = recordDeltaCalc;
+	// 	worstDelta.textContent = worstDeltaCalc;
+	// 	objectiveDelta.textContent = objectiveDeltaCalc;
+	//
+	// 	let deltas = [worstDelta, objectiveDelta, recordDelta];
+	// 	deltas.forEach((delta) => {
+	// 		if (delta.textContent < 0) {
+	// 			delta.style.color = '#a8ff56';
+	// 		} else if (delta.textContent > 0) {
+	// 			delta.textContent = '+' + delta.textContent;
+	// 			delta.style.color = '#fcff56';
+	// 		} else {
+	// 			delta.style.color = '#fff';
+	// 		}
+	// 	});
+	//
+	// }
 
 	// You can access the NodeCG api anytime from the `window.nodecg` object
 	// Or just `nodecg` for short. Like this!:
