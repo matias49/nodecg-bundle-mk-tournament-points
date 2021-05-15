@@ -1,8 +1,20 @@
 $bgColor: rgba(255, 86, 169, 0.6);
 $borderColor: rgba(128, 43, 84, 0.5);
 
+$recordColor: #56fcff;
+$worstColor: #ffd556;
+
 $flexSizeLeft: 0.1;
 $flexSizeRight: 0.17;
+
+@mixin podium-ranking($bgColor) {
+	background-color: $bgColor;
+	font-size: 1.5rem;
+
+	&:after {
+		content: none;
+	}
+}
 
 body {
 	font-family: 'Source Sans Pro', sans-serif;
@@ -37,15 +49,6 @@ body {
 
 .rightPart {
 	flex: $flexSizeRight;
-}
-
-.additionalInfo {
-	display: flex;
-	flex-direction: row;
-}
-
-.flexSpaceLeft {
-	flex: $flexSizeLeft;
 }
 
 #miscInfo {
@@ -92,30 +95,15 @@ body {
 		}
 
 		&.first {
-			background-color: rgba(218, 165, 32, 0.9);
-			font-size: 1.5rem;
-
-			&:after {
-				content: none;
-			}
+			@include podium-ranking(rgba(218, 165, 32, 0.9));
 		}
 
 		&.second {
-			background-color: rgba(192, 192, 192, 0.9);
-			font-size: 1.5rem;
-
-			&:after {
-				content: none;
-			}
+			@include podium-ranking(rgba(192, 192, 192, 0.9));
 		}
 
 		&.third {
-			background-color: rgba(244, 164, 96, 0.9);
-			font-size: 1.5rem;
-
-			&:after {
-				content: none;
-			}
+			@include podium-ranking(rgba(244, 164, 96, 0.9));
 		}
 	}
 }
@@ -190,9 +178,9 @@ body {
 }
 
 #record .legend, #record .score {
-	color: #56fcff;
+	color: $recordColor;
 }
 
 #worst .legend, #worst .score {
-	color: #ffd556;
+	color: $worstColor;
 }
