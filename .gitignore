@@ -3,3 +3,4 @@ coverage
 bower_components
 /graphics/css/
 /graphics/js/
+/common/config.js

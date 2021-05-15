@@ -19,18 +19,18 @@
 	</style>
 </head>
 <body>
-<div class="manualInputs">
-	<div>
-		<span>Course</span>
-		<input type="number" id="currentRaceNumber" min="0"/>
-		<input type="submit" value="Appliquer" id="submitCurrentRaceNumber">
-	</div>
-	<div>
-		<span>Points</span>
-		<input type="number" id="currentPoints" min="0"/>
-		<input type="submit" value="Appliquer" id="submitCurrentPoints">
-	</div>
-</div>
+<!--<div class="manualInputs">-->
+<!--	<div>-->
+<!--		<span>Course</span>-->
+<!--		<input type="number" id="currentRaceNumber" min="0"/>-->
+<!--		<input type="submit" value="Appliquer" id="submitCurrentRaceNumber">-->
+<!--	</div>-->
+<!--	<div>-->
+<!--		<span>Points</span>-->
+<!--		<input type="number" id="currentPoints" min="0"/>-->
+<!--		<input type="submit" value="Appliquer" id="submitCurrentPoints">-->
+<!--	</div>-->
+<!--</div>-->
 <div class="rankings">
 	<span>Classement de la course</span>
 	<input type="submit" value="1er" class="submitRanking" data-ranking="1">
@@ -47,11 +47,6 @@
 	<input type="submit" value="12eme" class="submitRanking" data-ranking="12">
 </div>
 <script>
-	// You can access the NodeCG api anytime from the `window.nodecg` object
-	// Or just `nodecg` for short. Like this!:
-	nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
-
-
 	let rankingSubmits = document.querySelectorAll('.submitRanking');
 	rankingSubmits.forEach((button) => {
 		button.addEventListener('click', (evt => {

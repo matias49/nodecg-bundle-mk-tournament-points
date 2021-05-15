@@ -3,7 +3,6 @@
 <head>
 	<title>Ponce Points</title>
 	<meta charset="UTF-8">
-	<script src="../common/scores.js"></script>
 	<link href="css/index.css" rel="stylesheet"/>
 </head>
 <body>
@@ -13,7 +12,7 @@
 			<div class="raceNumber background" id="raceNumber">
 				<span class="legend">Course</span>
 				<span class="currentRace" id="currentRace">0</span>
-				<span class="maxRaces">24</span>
+				<span class="maxRaces" id="maxRaces">0</span>
 			</div>
 		</div>
 		<div class="middlePart">
@@ -34,47 +33,23 @@
 				</div>
 			</div>
 			<div id="races">
-				<div class="raceResult current" data-number="1"></div>
-				<div class="raceResult" data-number="2"></div>
-				<div class="raceResult" data-number="3"></div>
-				<div class="raceResult" data-number="4"></div>
-				<div class="raceResult" data-number="5"></div>
-				<div class="raceResult" data-number="6"></div>
-				<div class="raceResult" data-number="7"></div>
-				<div class="raceResult" data-number="8"></div>
-				<div class="raceResult" data-number="9"></div>
-				<div class="raceResult" data-number="10"></div>
-				<div class="raceResult" data-number="11"></div>
-				<div class="raceResult" data-number="12"></div>
-				<div class="raceResult" data-number="13"></div>
-				<div class="raceResult" data-number="14"></div>
-				<div class="raceResult" data-number="15"></div>
-				<div class="raceResult" data-number="16"></div>
-				<div class="raceResult" data-number="17"></div>
-				<div class="raceResult" data-number="18"></div>
-				<div class="raceResult" data-number="19"></div>
-				<div class="raceResult" data-number="20"></div>
-				<div class="raceResult" data-number="21"></div>
-				<div class="raceResult" data-number="22"></div>
-				<div class="raceResult" data-number="23"></div>
-				<div class="raceResult" data-number="24"></div>
 			</div>
 		</div>
 		<div class="rightPart">
 			<div class="topPart background">
 				<div class="objective" id="objective">
 					<span class="legend">Objectif</span>
-					<span class="score" id="objectiveScore">200</span>
+					<span class="score" id="objectiveScore">0</span>
 					<span class="delta" id="objectiveDelta">0</span>
 				</div>
-				<img alt="logo"
-					 height="35px"
-					 src="https://static-cdn.jtvnw.net/jtv_user_pictures/72dae8da-582a-4a2b-a234-37d4cd3fa7d9-profile_image-70x70.png"
+				<img alt="logo" height="35px"
+					 id="logo"
+					 src=""
 					 style="border-radius: 50%; opacity: 0.8; margin-left: auto;"/>
 			</div>
 			<div class="background" id="miscInfo">
-				<div id="tournamentName">Ave - 107</div>
-				<div id="playerName">Matias49</div>
+				<div id="tournamentName"></div>
+				<div id="playerName"></div>
 				<div id="hour"></div>
 			</div>
 		</div>
@@ -82,6 +57,8 @@
 
 	</div>
 </div>
+<script src="../common/default.js" type="text/javascript"></script>
+<script src="../common/config.js" type="text/javascript"></script>
 <script src="js/anime.min.js" type="text/javascript"></script>
 <script>
 	let recordScoreNumber = 0;
@@ -93,6 +70,7 @@
 	let recordDelta = document.getElementById('recordDelta');
 
 	let currentRace = document.getElementById('currentRace');
+	let maxRaces = document.getElementById('maxRaces');
 	let currentScore = document.getElementById('currentScore');
 
 	let worstScore = document.getElementById('worstScore');
@@ -101,10 +79,24 @@
 	let objectiveScore = document.getElementById('objectiveScore');
 	let objectiveDelta = document.getElementById('objectiveDelta');
 
+	//region init
 	document.addEventListener("DOMContentLoaded", () => {
 		objectiveScore.textContent = objectiveScoreNumber;
+		maxRaces.textContent = maxRacesNumber;
+		generateResultBar(maxRacesNumber);
 		updateObjectiveDelta();
+		if (logoUrl !== undefined) {
+			document.getElementById('logo').src = logoUrl;
+		}
+		if (playerName !== undefined) {
+			document.getElementById('playerName').textContent = playerName;
+		}
+		if (tournamentName !== undefined) {
+			document.getElementById('tournamentName').textContent = tournamentName;
+		}
 	});
+
+	//endregion
 
 	function updateRaceResultsBar() {
 		let result;
@@ -128,22 +120,8 @@
 				result = currentRankings[currentRankings.length - 1];
 				break;
 		}
-		// currentRankings.forEach((value, index) => {
-		// 	let raceResult = document.querySelector('.raceResult[data-number="' + ++index + '"]');
-		// 	raceResult.classList.remove('current');
-		// 	raceResult.classList.add('past');
-		// 	let result;
-		// 	raceResult.textContent = value;
-		//
-		// });
+
 		if (isNaN(result)) {
-			// previousRaceResult.style.opacity = 0.9
-			// anime({
-			// 	targets: previousRaceResult,
-			// 	opacity: 1,
-			// 	easing: 'linear',
-			// 	duration: 1000,
-			// });
 			previousRaceResult.textContent = result;
 		} else {
 			anime({
@@ -159,140 +137,101 @@
 		currentRace.classList.add('current')
 	}
 
-	nodecg.listenFor('raceRanking', ranking => {
-		// console.log(ranking);
-		currentRankings.push(ranking);
-		let previousPoints = isNaN(currentCumulativePoints[currentCumulativePoints.length - 1]) ? 0 : currentCumulativePoints[currentCumulativePoints.length - 1];
-		currentCumulativePoints.push(previousPoints + calcPoints(ranking))
-		currentRace.textContent = currentRankings.length;
-		// worstScore.textContent = worstCumulativePoints[currentRankings.length - 1];
-		// currentScore.textContent = currentCumulativePoints[currentRankings.length - 1];
-		// displayNewDeltas();
+	function generateResultBar(racesNumber) {
+		for (let i = 1; i <= racesNumber; i++) {
+			let element = document.createElement('div');
+			element.classList.add('raceResult');
+			element.setAttribute('data-number', i.toString());
+			document.getElementById('races').appendChild(element);
+		}
+		document.querySelector('.raceResult[data-number="1"]').classList.add('current');
+	}
+
+	function updateGraphic() {
 		updateRaceResultsBar();
 		updateScoreData();
 		updateRecordData();
 		updateWorstData();
 		updateObjectiveDelta();
+		updateCurrentRaceNumber();
+	}
+
+	nodecg.listenFor('raceRanking', ranking => {
+		// console.log(ranking);
+		currentRankings.push(ranking);
+		currentCumulativePoints = generateCumulativeArray(currentRankings);
+		updateGraphic();
 	});
 
-	function updateScoreData() {
+	function animateScore(target, newScore) {
 		anime({
-			targets: currentScore,
+			targets: target,
 			keyframes: [{opacity: 0}, {opacity: 1}],
 			easing: 'linear',
 			duration: 1000,
 		});
 		anime({
-			targets: currentScore,
-			textContent: [currentScore.textContent, currentCumulativePoints[currentRankings.length - 1]],
+			targets: target,
+			textContent: [target.textContent, newScore],
 			easing: 'easeInOutSine',
 			round: 1,
 			duration: 500,
 			delay: 250,
 		});
+	}
 
+	function animateDelta(target, newDelta) {
+		anime({
+			targets: target,
+			textContent: [target.textContent, newDelta],
+			easing: 'easeInOutSine',
+			color: getDeltaColor(newDelta),
+			round: 1,
+			duration: 500,
+			delay: 150,
+		}).finished.then(function () {
+			if (newDelta > 0) {
+				target.classList.add('positive');
+			} else {
+				target.classList.remove('positive');
+			}
+		});
+	}
 
+	function updateCurrentRaceNumber() {
+		anime({
+			targets: currentRace,
+			keyframes: [{opacity: 0}, {opacity: 1}],
+			easing: 'linear',
+			duration: 1000,
+			delay: 1500,
+		});
+		anime({
+			targets: currentRace,
+			textContent: [currentRace.textContent, currentRankings.length],
+			easing: 'easeInOutSine',
+			round: 1,
+			duration: 500,
+			delay: 1500,
+		});
+	}
+
+	function updateScoreData() {
+		animateScore(currentScore, currentCumulativePoints[currentRankings.length - 1]);
 	}
 
 	function updateRecordData() {
-		anime({
-			targets: recordScore,
-			keyframes: [{opacity: 0}, {opacity: 1}],
-			easing: 'linear',
-			duration: 1000,
-		});
-		anime({
-			targets: recordScore,
-			textContent: [recordScore.textContent, recordCumulativePoints[currentRankings.length - 1]],
-			easing: 'easeInOutSine',
-			round: 1,
-			duration: 500,
-			delay: 250,
-		});
-
-		let delta = getCurrentDeltaValue(recordCumulativePoints[currentRankings.length - 1]);
-		// anime({
-		// 	targets: worstDelta,
-		// 	keyframes: [{opacity: 0}, {opacity: 1}],
-		// 	easing: 'linear',
-		// 	duration: 1000,
-		// });
-		anime({
-			targets: recordDelta,
-			textContent: [recordDelta.textContent, delta],
-			easing: 'easeInOutSine',
-			color: getDeltaColor(delta),
-			round: 1,
-			duration: 500,
-			delay: 150,
-		}).finished.then(function () {
-			if (delta > 0) {
-				recordDelta.classList.add('positive');
-			} else {
-				recordDelta.classList.remove('positive');
-			}
-		});
+		animateScore(recordScore, recordCumulativePoints[currentRankings.length - 1]);
+		animateDelta(recordDelta, getCurrentDeltaValue(recordCumulativePoints[currentRankings.length - 1]));
 	}
 
 	function updateWorstData() {
-		anime({
-			targets: worstScore,
-			keyframes: [{opacity: 0}, {opacity: 1}],
-			easing: 'linear',
-			duration: 1000,
-		});
-		anime({
-			targets: worstScore,
-			textContent: [worstScore.textContent, worstCumulativePoints[currentRankings.length - 1]],
-			easing: 'easeInOutSine',
-			round: 1,
-			duration: 500,
-			delay: 150,
-		});
-
-		let delta = getCurrentDeltaValue(worstCumulativePoints[currentRankings.length - 1]);
-		// anime({
-		// 	targets: worstDelta,
-		// 	keyframes: [{opacity: 0}, {opacity: 1}],
-		// 	easing: 'linear',
-		// 	duration: 1000,
-		// });
-		anime({
-			targets: worstDelta,
-			textContent: [worstDelta.textContent, delta],
-			easing: 'easeInOutSine',
-			color: getDeltaColor(delta),
-			round: 1,
-			duration: 500,
-			delay: 150,
-		}).finished.then(function () {
-			if (delta > 0) {
-				worstDelta.classList.add('positive');
-			} else {
-				worstDelta.classList.remove('positive');
-			}
-		});
-
-
+		animateScore(worstScore, worstCumulativePoints[currentRankings.length - 1]);
+		animateDelta(worstDelta, getCurrentDeltaValue(worstCumulativePoints[currentRankings.length - 1]))
 	}
 
 	function updateObjectiveDelta() {
-		let delta = getCurrentDeltaValue(objectiveScore.textContent);
-		anime({
-			targets: objectiveDelta,
-			textContent: [objectiveDelta.textContent, delta],
-			easing: 'easeInOutSine',
-			color: getDeltaColor(delta),
-			round: 1,
-			duration: 500,
-			delay: 250,
-		}).finished.then(function () {
-			if (delta > 0) {
-				objectiveDelta.classList.add('positive');
-			} else {
-				objectiveDelta.classList.remove('positive');
-			}
-		});
+		animateDelta(objectiveDelta, getCurrentDeltaValue(objectiveScore.textContent));
 	}
 
 	function getCurrentDeltaValue(value) {
@@ -309,33 +248,6 @@
 			return '#fff';
 		}
 	}
-
-	// function displayNewDeltas() {
-	// 	let recordDeltaCalc = recordScore.textContent - currentScore.textContent;
-	// 	let worstDeltaCalc = worstScore.textContent - currentScore.textContent;
-	// 	let objectiveDeltaCalc = objectiveScore.textContent - currentScore.textContent;
-	//
-	// 	recordDelta.textContent = recordDeltaCalc;
-	// 	worstDelta.textContent = worstDeltaCalc;
-	// 	objectiveDelta.textContent = objectiveDeltaCalc;
-	//
-	// 	let deltas = [worstDelta, objectiveDelta, recordDelta];
-	// 	deltas.forEach((delta) => {
-	// 		if (delta.textContent < 0) {
-	// 			delta.style.color = '#a8ff56';
-	// 		} else if (delta.textContent > 0) {
-	// 			delta.textContent = '+' + delta.textContent;
-	// 			delta.style.color = '#fcff56';
-	// 		} else {
-	// 			delta.style.color = '#fff';
-	// 		}
-	// 	});
-	//
-	// }
-
-	// You can access the NodeCG api anytime from the `window.nodecg` object
-	// Or just `nodecg` for short. Like this!:
-	nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
 
 	//region hour
 	let dateTime = new Date();
