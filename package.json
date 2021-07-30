@@ -1,7 +1,7 @@
 {
-  "name": "ponce-points",
-  "version": "0.0.0",
-  "description": "Affichage des points pour le tournoi",
+  "name": "mk-tournament-points",
+  "version": "0.1.0",
+  "description": "Graphic display of a points' history from a Mario Kart Tournament",
   "homepage": "",
   "author": {
     "name": "Matias49",
@@ -10,12 +10,11 @@
   },
   "files": [
     "dashboard",
-    "graphics",
-    "extension.js",
-    "extension"
+    "graphics"
   ],
   "keywords": [
-    "",
+    "mario-kart",
+    "tournament",
     "nodecg-bundle"
   ],
   "nodecg": {
@@ -26,7 +25,8 @@
         "title": "Panel",
         "width": 8,
         "file": "panel.html",
-        "headerColor": "#525F78"
+        "headerColor": "#525F78",
+        "workspace": "Mario Kart Tournament"
       }
     ],
     "graphics": [
@@ -48,10 +48,8 @@
   "dependencies": {
     "gulp": "^4.0.2",
     "gulp-babel-minify": "^0.5.1",
-    "gulp-sass": "^4.1.0",
-    "gulp-terser": "^2.0.1",
+    "gulp-sass": "^4.1.1",
     "node-sass": "^5.0.0",
-    "sass": "^1.32.12",
-    "terser": "^5.7.0"
+    "sass": "^1.36.0"
   }
 }

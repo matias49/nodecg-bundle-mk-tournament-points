@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title></title>
 	<meta charset="UTF-8">
 	<style>
-
-		/*.manualInputs {*/
-		/*	display: flex;*/
-		/*	flex-direction: row;*/
-		/*	justify-content: space-between;*/
-		/*}*/
-
 		.rankings > input {
 			background-color: #00fff9;
 			padding: 1rem;
@@ -19,32 +13,20 @@
 	</style>
 </head>
 <body>
-<!--<div class="manualInputs">-->
-<!--	<div>-->
-<!--		<span>Course</span>-->
-<!--		<input type="number" id="currentRaceNumber" min="0"/>-->
-<!--		<input type="submit" value="Appliquer" id="submitCurrentRaceNumber">-->
-<!--	</div>-->
-<!--	<div>-->
-<!--		<span>Points</span>-->
-<!--		<input type="number" id="currentPoints" min="0"/>-->
-<!--		<input type="submit" value="Appliquer" id="submitCurrentPoints">-->
-<!--	</div>-->
-<!--</div>-->
 <div class="rankings">
-	<span>Classement de la course</span>
-	<input type="submit" value="1er" class="submitRanking" data-ranking="1">
-	<input type="submit" value="2eme" class="submitRanking" data-ranking="2">
-	<input type="submit" value="3eme" class="submitRanking" data-ranking="3">
-	<input type="submit" value="4eme" class="submitRanking" data-ranking="4">
-	<input type="submit" value="5eme" class="submitRanking" data-ranking="5">
-	<input type="submit" value="6eme" class="submitRanking" data-ranking="6">
-	<input type="submit" value="7eme" class="submitRanking" data-ranking="7">
-	<input type="submit" value="8eme" class="submitRanking" data-ranking="8">
-	<input type="submit" value="9eme" class="submitRanking" data-ranking="9">
-	<input type="submit" value="10eme" class="submitRanking" data-ranking="10">
-	<input type="submit" value="11eme" class="submitRanking" data-ranking="11">
-	<input type="submit" value="12eme" class="submitRanking" data-ranking="12">
+	<span>Race final ranking</span>
+	<input class="submitRanking" data-ranking="1" type="submit" value="1st">
+	<input class="submitRanking" data-ranking="2" type="submit" value="2nd">
+	<input class="submitRanking" data-ranking="3" type="submit" value="3rd">
+	<input class="submitRanking" data-ranking="4" type="submit" value="4th">
+	<input class="submitRanking" data-ranking="5" type="submit" value="5th">
+	<input class="submitRanking" data-ranking="6" type="submit" value="6th">
+	<input class="submitRanking" data-ranking="7" type="submit" value="7th">
+	<input class="submitRanking" data-ranking="8" type="submit" value="8th">
+	<input class="submitRanking" data-ranking="9" type="submit" value="9th">
+	<input class="submitRanking" data-ranking="10" type="submit" value="10th">
+	<input class="submitRanking" data-ranking="11" type="submit" value="11th">
+	<input class="submitRanking" data-ranking="12" type="submit" value="12th">
 </div>
 <script>
 	let rankingSubmits = document.querySelectorAll('.submitRanking');
