@@ -1,7 +1,7 @@
 'use strict';
 
 const {src, dest, watch, series, parallel} = require('gulp');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const minify = require("gulp-babel-minify");
 
 const watchJSGraphicsFiles = ['./assets/js/graphics/*.js', '!./assets/js/graphics/*.min.js'];
