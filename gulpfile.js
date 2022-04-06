@@ -14,13 +14,13 @@ sass.compiler = require('node-sass');
 function sassGraphics() {
 	return src('./assets/scss/graphics/*.scss')
 		.pipe(sass().on('error', sass.logError))
-		.pipe(dest('./graphics/scss'));
+		.pipe(dest('./graphics/css'));
 }
 
 function sassDashboard() {
 	return src('./assets/scss/dashboard/*.scss')
 		.pipe(sass().on('error', sass.logError))
-		.pipe(dest('./dashboard/scss'));
+		.pipe(dest('./dashboard/css'));
 }
 
 function jsGraphics() {

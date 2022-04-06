@@ -1,5 +1,6 @@
-$bgColor: rgba(255, 86, 169, 0.6);
-$borderColor: rgba(128, 43, 84, 0.5);
+$bgColor: none;
+//$bgColor: rgba(255, 86, 169, 0.6);
+$borderColor: 1px solid rgb(0, 164, 252);
 
 $recordColor: #56fcff;
 $worstColor: #ffd556;
@@ -58,16 +59,20 @@ body {
 	font-size: 18px;
 	font-style: italic;
 	align-self: flex-end;
+	justify-content: space-between;
 
 	& > div {
 		border-left: 1px solid $borderColor;
 		border-right: 1px solid $borderColor;
-		padding: 0.05rem 0.7rem;
 
 		&:last-of-type {
 			border: none;
 		}
 	}
+}
+
+#network {
+	display: flex;
 }
 
 .raceResult {

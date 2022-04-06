@@ -11,8 +11,12 @@
 		<div class="leftPart">
 			<div class="raceNumber background" id="raceNumber">
 				<span class="legend">Course</span>
-				<span class="currentRace" id="currentRace">0</span>
+				<span class="currentRace" id="currentRace">1</span>
 				<span class="maxRaces" id="maxRaces">0</span>
+			</div>
+			<div class="background" id="miscInfo">
+				<div id="hour"></div>
+				<div id="tournamentName"></div>
 			</div>
 		</div>
 		<div class="middlePart">
@@ -42,15 +46,13 @@
 					<span class="score" id="objectiveScore">0</span>
 					<span class="delta" id="objectiveDelta">0</span>
 				</div>
-				<img alt="logo" height="35px"
+
+			</div>
+			<div class="background" id="network">
+				<img alt="logo" height="25px"
 					 id="logo"
 					 src=""
 					 style="border-radius: 50%; opacity: 0.8; margin-left: auto;"/>
-			</div>
-			<div class="background" id="miscInfo">
-				<div id="tournamentName"></div>
-				<div id="playerName"></div>
-				<div id="hour"></div>
 			</div>
 		</div>
 
@@ -87,9 +89,6 @@
 		if (logoUrl !== undefined) {
 			document.getElementById('logo').src = logoUrl;
 		}
-		if (playerName !== undefined) {
-			document.getElementById('playerName').textContent = playerName;
-		}
 		if (tournamentName !== undefined) {
 			document.getElementById('tournamentName').textContent = tournamentName;
 		}
@@ -121,7 +120,7 @@
 		}
 
 		if (isNaN(result)) {
-			gsap.fromTo(previousRaceResult, {opacity: 0}, {
+			gsap.to(previousRaceResult, {
 				textContent: result,
 				opacity: 1,
 				ease: "power1.inOut",
@@ -131,7 +130,6 @@
 		} else {
 			gsap.fromTo(previousRaceResult, {
 				textContent: 12,
-				opacity: 0
 			}, {
 				textContent: result,
 				opacity: 1,
@@ -141,8 +139,10 @@
 			});
 		}
 
-		let currentRace = document.querySelector('.raceResult[data-number="' + (currentRankings.length + 1) + '"]');
-		currentRace.classList.add('current')
+		if (currentRankings.length < maxRacesNumber) {
+			let currentRace = document.querySelector('.raceResult[data-number="' + (currentRankings.length + 1) + '"]');
+			currentRace.classList.add('current');
+		}
 	}
 
 	function generateResultBar(racesNumber) {
@@ -161,7 +161,9 @@
 		updateRecordData();
 		updateWorstData();
 		updateObjectiveDelta();
-		updateCurrentRaceNumber();
+		if (currentRankings.length < maxRacesNumber) {
+			updateCurrentRaceNumber();
+		}
 	}
 
 	nodecg.listenFor('raceRanking', ranking => {
@@ -199,7 +201,7 @@
 
 	function updateCurrentRaceNumber() {
 		gsap.to(currentRace, {
-			textContent: currentRankings.length,
+			textContent: currentRankings.length + 1,
 			snap: {textContent: 1},
 			duration: 1,
 			delay: 1.5,
