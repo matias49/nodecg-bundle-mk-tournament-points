@@ -1,6 +1,7 @@
 $bgColor: none;
 //$bgColor: rgba(255, 86, 169, 0.6);
-$borderColor: 1px solid rgb(0, 164, 252);
+//$borderColor: 1px solid rgb(0, 164, 252);
+$borderColor: none;
 
 $recordColor: #56fcff;
 $worstColor: #ffd556;
@@ -9,183 +10,183 @@ $flexSizeLeft: 0.1;
 $flexSizeRight: 0.17;
 
 @mixin podium-ranking($bgColor) {
-	background-color: $bgColor;
-	font-size: 1.5rem;
+  background-color: $bgColor;
+  font-size: 1.5rem;
 
-	&:after {
-		content: none;
-	}
+  &:after {
+    content: none;
+  }
 }
 
 body {
-	font-family: 'Source Sans Pro', sans-serif;
-	margin: 0;
+  font-family: 'Source Sans 3', sans-serif;
+  margin: 0;
 }
 
 .background {
-	background-color: $bgColor;
-	padding: 0.2rem 0.5rem;
+  background-color: $bgColor;
+  padding: 0.2rem 0.5rem;
 }
 
 .positive {
-	&:before {
-		content: '+';
-	}
+  &:before {
+    content: '+';
+  }
 }
 
 .bar {
-	display: flex;
-	flex-direction: row;
-	color: white;
-	font-size: 21px;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  font-size: 21px;
 }
 
 .leftPart {
-	flex: $flexSizeLeft;
+  flex: $flexSizeLeft;
 }
 
 .middlePart {
-	flex: 1;
+  flex: 1;
 }
 
 .rightPart {
-	flex: $flexSizeRight;
+  flex: $flexSizeRight;
 }
 
 #miscInfo {
-	flex: 0.15;
-	display: flex;
-	color: white;
-	font-size: 18px;
-	font-style: italic;
-	align-self: flex-end;
-	justify-content: space-between;
+  flex: 0.15;
+  display: flex;
+  color: white;
+  font-size: 18px;
+  font-style: italic;
+  align-self: flex-end;
+  justify-content: space-between;
 
-	& > div {
-		border-left: 1px solid $borderColor;
-		border-right: 1px solid $borderColor;
+  & > div {
+    border-left: 1px solid $borderColor;
+    border-right: 1px solid $borderColor;
 
-		&:last-of-type {
-			border: none;
-		}
-	}
+    &:last-of-type {
+      border: none;
+    }
+  }
 }
 
 #network {
-	display: flex;
+  display: flex;
 }
 
 .raceResult {
-	width: 2rem;
-	height: 2rem;
-	font-size: 1.2rem;
-	opacity: 0.8;
-	background-color: rgba(255, 255, 255, 0.3);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: background-color 1s ease-in-out;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 1s ease-in-out;
 
-	&.current {
-		background-color: rgba(255, 255, 255, 0.9);
-	}
+  &.current {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
 
-	&.past {
-		background-color: rgba(128, 128, 128, 0.6);
+  &.past {
+    background-color: rgba(128, 128, 128, 0.6);
 
-		&:after {
-			content: 'e';
-			vertical-align: top;
-			font-size: 10px;
-		}
+    &:after {
+      content: 'e';
+      vertical-align: top;
+      font-size: 10px;
+    }
 
-		&.first {
-			@include podium-ranking(rgba(218, 165, 32, 0.9));
-		}
+    &.first {
+      @include podium-ranking(rgba(218, 165, 32, 0.9));
+    }
 
-		&.second {
-			@include podium-ranking(rgba(192, 192, 192, 0.9));
-		}
+    &.second {
+      @include podium-ranking(rgba(192, 192, 192, 0.9));
+    }
 
-		&.third {
-			@include podium-ranking(rgba(244, 164, 96, 0.9));
-		}
-	}
+    &.third {
+      @include podium-ranking(rgba(244, 164, 96, 0.9));
+    }
+  }
 }
 
 .raceNumber {
-	display: flex;
-	flex: $flexSizeLeft;
-	justify-content: left;
-	border-right: 5px solid $borderColor;
-	align-items: center;
+  display: flex;
+  flex: $flexSizeLeft;
+  justify-content: left;
+  border-right: 5px solid $borderColor;
+  align-items: center;
 
-	.currentRace {
-		&::after {
-			content: '/';
+  .currentRace {
+    &::after {
+      content: '/';
 
-		}
-	}
+    }
+  }
 }
 
 #races {
-	flex: 1;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .score {
-	&::after {
-		content: ' pts';
-	}
+  &::after {
+    content: ' pts';
+  }
 }
 
 
 .points {
-	display: flex;
-	flex: 1;
-	flex-direction: row;
-	justify-content: space-between;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
 
-	> div {
-		display: flex;
-		align-items: center;
-	}
+  > div {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .topPart {
-	display: flex;
+  display: flex;
 }
 
 .objective {
-	display: flex;
-	padding-left: 0.5rem;
-	justify-content: center;
-	border-left: 5px solid $borderColor;
-	align-items: center;
+  display: flex;
+  padding-left: 0.5rem;
+  justify-content: center;
+  border-left: 5px solid $borderColor;
+  align-items: center;
 }
 
 
 .legend {
-	font-weight: bold;
-	margin-right: 0.2rem;
+  font-weight: bold;
+  margin-right: 0.2rem;
 
-	&::after {
-		content: ' : ';
-	}
+  &::after {
+    content: ' : ';
+  }
 }
 
 .delta {
-	margin-left: 0.4rem;
-	font-size: 15px;
-	font-style: italic;
+  margin-left: 0.4rem;
+  font-size: 15px;
+  font-style: italic;
 }
 
 #record .legend, #record .score {
-	color: $recordColor;
+  color: $recordColor;
 }
 
 #worst .legend, #worst .score {
-	color: $worstColor;
+  color: $worstColor;
 }
